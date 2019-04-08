@@ -16,9 +16,12 @@ class Scene_Intro extends Phaser.Scene {
 
     create(data)
     {
-        var s = this.add.sprite(0, 0, "einstein");
-        s.setOrigin(0, 0);
-        s.rotation = 0.14;
+        // var s = this.add.sprite(0, 0, "albert_einstein_head");
+        // s.setOrigin(0, 0);
+        // s.rotation = 0.14;
+
+
+        // this.add.button(200, 300, 'button_sprite_sheet', function(){}, this, 2, 1, 0);
     }
 
     update(time, delta)
@@ -39,9 +42,7 @@ class Scene_Title extends Phaser.Scene {
 
     create()
     {
-        var s = this.add.sprite(0, 0, "einstein");
-        s.setOrigin(0, 0);
-        s.rotation = 0.14;
+        Helper.PlaceSprite(0, 0, "MockDesign_MainMenu");
     }
 
     update(time, delta)
@@ -60,6 +61,7 @@ class Scene_Instructions extends Phaser.Scene {
 
     create()
     {
+        Helper.PlaceSprite(0, 0, "MockDesign_Instructions");
     }
 
     update(time, delta)
@@ -96,6 +98,7 @@ class Scene_Credits extends Phaser.Scene {
 
     create()
     {
+        Helper.PlaceSprite(0, 0, "MockDesign_Credits");
     }
 
     update(time, delta)
@@ -114,6 +117,7 @@ class Scene_Gameplay extends Phaser.Scene {
 
     create()
     {
+        Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
     }
 
     update(time, delta)
@@ -151,3 +155,57 @@ Title/Menu
 Gameplay
 Results
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Helper = {
+    _scene: "Not initialized",
+
+    _initialize: function() {
+        console.log("Init HELPER...");
+
+        
+        this.AR = game.config.width / 720;
+    },
+
+    ChangeScene: function(key, data) {
+        this._scene = game.scene.keys[key];
+        //
+        game.scene.start(key, data);
+    },
+
+    PlaceSprite: function(x, y, key) {
+        console.log(this);
+
+        var s = this._scene.add.sprite(x, y, key);
+        s.setOrigin(0, 0);
+        //
+        s.scaleX = Helper.AR;
+        s.scaleY = Helper.AR;
+        //
+        return s;
+    },
+
+    PlaceImage: function(x, y, key) {
+        var s = this._scene.add.image(x, y, key);
+        s.setOrigin(0, 0);
+        //
+        s.scaleX = Helper.AR;
+        s.scaleY = Helper.AR;
+        //
+        return s;
+    },
+};
+

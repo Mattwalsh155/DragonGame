@@ -2,6 +2,14 @@
 
 var rawImages = [
     "albert_einstein_head.jpg",
+
+    "MockDesign_Credits.jpg",
+    "MockDesign_GameScreen.jpg",
+    "MockDesign_Instructions.jpg",
+    "MockDesign_MainMenu.jpg",
+];
+var rawSpritesheets = [
+    ["button_sprite_sheet.png", 197, 71],
 ];
 var rawScenes = [
     ['intro', Scene_Intro],
@@ -12,6 +20,11 @@ var rawScenes = [
     ['gameplay', Scene_Gameplay],
     ['results', Scene_Results],
 ];
+
+
+
+
+
 
 
 
@@ -30,10 +43,24 @@ class Scene_Loader extends Phaser.Scene {
         var Q;
         // -----------------------------------------------------------------------------------------------------------------------------
         // *** The game's resources and stuff. Images, audio, etc...
+        console.log("ON: Spritesheets");
+
+        for (var i = 0; i < rawSpritesheets.length; i++) {
+            Q = rawSpritesheets[i][0];
+            Q = this.load.spritesheet(Q.slice(0, Q.indexOf('.')), "assets/pics/" + Q, {
+                frameWidth: rawSpritesheets[i][1],
+                frameHeight: rawSpritesheets[i][2]
+            });
+            console.log(Q);
+        }
+
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // *** The game's resources and stuff. Images, audio, etc...
         console.log("ON: Images");
 
         for (var i = 0; i < rawImages.length; i++) {
-            Q = this.load.image("einstein", "assets/pics/" + rawImages[i]);
+            Q = rawImages[i];
+            Q = this.load.image(Q.slice(0, Q.indexOf('.')), "assets/pics/" + rawImages[i]);
             console.log(Q);
         }
 
@@ -54,17 +81,15 @@ class Scene_Loader extends Phaser.Scene {
     create(data)
     {
         console.log("Starting intro...");
-        game.scene.start("intro", { wasCreatedAtGameStart: true });
+        Helper.ChangeScene("gameplay", { wasCreatedAtGameStart: true });
     }
-
 }
-
 
 
 var game = new Phaser.Game({
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 450, // (window.innerWidth * window.devicePixelRatio)
+    height: 800, // (window.innerHeight * window.devicePixelRatio)
     physics: {
         default: 'arcade',
         arcade: {
@@ -73,4 +98,6 @@ var game = new Phaser.Game({
     },
     scene: Scene_Loader,
 });
-
+//
+//
+Helper._initialize();
