@@ -183,7 +183,11 @@ Helper = {
     ChangeScene: function(key, data) {
         this._scene = game.scene.keys[key];
         //
+        console.log("[" + key + "] scene is beginning...");
+        //
         game.scene.start(key, data);
+        //
+        console.log("... [" + key + "] scene has begun.");
     },
 
     PlaceSprite: function(x, y, key) {

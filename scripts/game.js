@@ -80,7 +80,6 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        console.log("Starting intro...");
         Helper.ChangeScene("gameplay", { wasCreatedAtGameStart: true });
     }
 }
