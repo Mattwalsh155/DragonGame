@@ -2,6 +2,18 @@
 
 var rawImages = [
     "albert_einstein_head.jpg",
+    "sampleBackground.png",
+    "background.png",
+    "ship.png",
+    "ship2.png",
+    "ship3.png",
+    "Burnt_Ham.png",
+    "RawChicken.svg",
+    "Dragon_Logo.png",
+    "RawOrange.png",
+    "RawApple.png",
+    "DragonInGame.png"
+
 ];
 var rawScenes = [
     ['intro', Scene_Intro],
@@ -12,8 +24,6 @@ var rawScenes = [
     ['gameplay', Scene_Gameplay],
     ['results', Scene_Results],
 ];
-
-
 
 
 // *** Loads in all the necessary thing for the games to run. Basically, the loading screen.
@@ -33,7 +43,7 @@ class Scene_Loader extends Phaser.Scene {
         console.log("ON: Images");
 
         for (var i = 0; i < rawImages.length; i++) {
-            Q = this.load.image("einstein", "assets/pics/" + rawImages[i]);
+            Q = this.load.image(rawImages[i], "assets/pics/" + rawImages[i]);
             console.log(Q);
         }
 
@@ -59,16 +69,14 @@ class Scene_Loader extends Phaser.Scene {
 
 }
 
-
-
 var game = new Phaser.Game({
     type: Phaser.AUTO,
-    width: 800,
+    width: 400,
     height: 600,
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 200 }
+            gravity: { y: 0 }
         }
     },
     scene: Scene_Loader,
