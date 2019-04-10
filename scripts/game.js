@@ -7,6 +7,7 @@ var rawImages = [
     "MockDesign_GameScreen.jpg",
     "MockDesign_Instructions.jpg",
     "MockDesign_MainMenu.jpg",
+    "Start_Button.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
@@ -80,7 +81,7 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        Helper.ChangeScene("gameplay", { wasCreatedAtGameStart: true });
+        Helper.ChangeScene("title", { wasCreatedAtGameStart: true });
     }
 }
 
