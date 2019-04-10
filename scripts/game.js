@@ -7,6 +7,8 @@ var rawImages = [
     "MockDesign_GameScreen.jpg",
     "MockDesign_Instructions.jpg",
     "MockDesign_MainMenu.jpg",
+
+    "RawApple.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],

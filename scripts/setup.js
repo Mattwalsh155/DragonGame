@@ -105,6 +105,11 @@ class Scene_Credits extends Phaser.Scene {
     {
     }
 }
+
+
+
+var sprite;
+var group;
 class Scene_Gameplay extends Phaser.Scene {
     Scene_Gameplay()
     {
@@ -113,15 +118,50 @@ class Scene_Gameplay extends Phaser.Scene {
 
     preload()
     {
+        // this.load.image('mushroom', 'assets/sprites/mushroom2.png');
+        // this.load.image('ball', 'assets/sprites/shinyball.png');
     }
 
     create()
     {
-        Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
+        // Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
+
+
+        sprite = this.physics.add.image(400, 300, 'RawApple');
+
+        group = this.physics.add.staticGroup({
+            key: 'RawApple',
+            frameQuantity: 30
+        });
+
+
+
+        Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
+
+        //  We need to call this because placeOnRectangle has changed the coordinates of all the children
+        //  If we don't call it, the static physics bodies won't be updated to reflect them
+        group.refresh();
+
+        sprite.setVelocity(100, 200).setBounce(1, 1).setCollideWorldBounds(true).setGravityY(200);
+
+        this.physics.add.collider(sprite, group);
+
+
+        sprite.setCollideCallback(this.onSpriteCollide, this);
+    }
+
+    onSpriteCollide() {
+        alert("BABY!");
     }
 
     update(time, delta)
     {
+    }
+
+
+
+    hitSprite (sprite1, sprite2) {
+        
     }
 }
 class Scene_Results extends Phaser.Scene {
