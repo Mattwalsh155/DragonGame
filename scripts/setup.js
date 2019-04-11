@@ -145,7 +145,7 @@ class Scene_Gameplay extends Phaser.Scene {
         Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
         menuButton = Helper.PlaceImage(345,12,"MenuButton").setInteractive();
         menuButton.on("pointerdown", function(pointer){
-            Helper.ChangeScene("credits");
+            Helper.ChangeScene("title");
         });
         
     }
