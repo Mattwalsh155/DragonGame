@@ -35,28 +35,185 @@ class Scene_Intro extends Phaser.Scene {
         console.log("Intro scene was started.");
     }
 
+    
+
+    create()
+    {
+    }
+
+    update(time, delta)
+    {
+        // Helper.ChangeScene('title', {});
+    }
+    
+}
+// *** The first acknowledgement of the game. This is the title card or that "press start" sorta screen.
+class Scene_Title extends Phaser.Scene {
+    
+    button;
+    
+    Scene_Title()
+    {
+        Phaser.Scene.call(this, { key: 'title' });
+    }
+
+    preload()
+    {
+        console.log("Title scene was started.");
+       
+    }
+
+    create()
+    {
+        
+        Helper.PlaceImage(0,0,"PlaceHolderBG")
+        //
+        
+        Helper.PlaceSprite(0, 0, "MockDesign_MainMenu");
+        //
+
+        //Start Button
+        startButton = Helper.PlaceImage(125, 350, "StartButton");
+        startButton.setInteractive();
+        startButton.on('pointerdown', function(pointer){
+            console.log("ButtonPressed");
+            Helper.ChangeScene("gameplay");
+        });
+        //Instruction Button
+        insButton = Helper.PlaceImage(125, 445, "InstructionButton").setInteractive();
+        insButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("instructions");
+        });
+        //HighScore Button
+        hsButton = Helper.PlaceImage(125, 540, "HighScoreButton").setInteractive();
+        hsButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("highscore");
+        });
+        //Credits Button
+        credButton =  Helper.PlaceImage(125, 635, "CreditsButton").setInteractive();
+        credButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("credits");
+            console.log("Credits");
+        });
+    }
+
+    up() {
+        console.log('button up', arguments);
+    }
+    
+    over() {
+        console.log('button over');
+    }
+    
+    out() {
+        console.log('button out');
+    }
+    
+    actionOnClick () {
+    
+        background.visible =! background.visible;
+    
+    }
+   
+    update(time, delta)
+    {
+    }
+}
+class Scene_Instructions extends Phaser.Scene {
+    Scene_Instructions()
+    {
+        Phaser.Scene.call(this, { key: 'instructions' });
+    }
+
+    preload()
+    {
+    }
+
+    create()
+    {
+        Helper.PlaceSprite(0, 0, "MockDesign_Instructions");
+    }
+
+    update(time, delta)
+    {
+    }
+}
+class Scene_Highscore extends Phaser.Scene {
+    Scene_Highscore()
+    {
+        Phaser.Scene.call(this, { key: 'highscore' });
+    }
+
+    preload()
+    {
+    }
+
+    create()
+    {
+        
+        Helper.PlaceSprite(100, 0, "MockDesign_Instructions");
+    }
+
+    update(time, delta)
+    {
+    }
+}
+class Scene_Credits extends Phaser.Scene {
+    Scene_Credits()
+    {
+        Phaser.Scene.call(this, { key: 'credits' });
+    }
+
+    preload()
+    {
+    }
+
+    create()
+    {
+        Helper.PlaceSprite(0, 0, "MockDesign_Credits");
+    }
+
+    update(time, delta)
+    {
+    }
+}
+
+
+
+var sprite;
+var group;
+class Scene_Gameplay extends Phaser.Scene {
+    Scene_Gameplay()
+    {
+        Phaser.Scene.call(this, { key: 'gameplay' });
+    }
+
+    preload()
+    {
+    }
+
     create(data)
     {
         //this.add.text(20, 20, "Loading game...");
-        var s = this.add.sprite(0, 0, "Background_Temp.png");
+        var s = this.add.sprite(0, 0, "Background_Temp");
         s.setOrigin(0, 0);
         s.rotation = 0;
         s.setScale(0.7);
-        //this.add.image(375, 300, "background.png");
+        //this.add.image(375, 300, "background");
 
-        //ship2 = this.add.image(150, 150, "ship2.png");
-        //ship3 = this.add.image(200, 200, "ship3.png");
-        hamBurnt = this.physics.add.image(300, 500, "Burnt_Ham.png");
+        //ship2 = this.add.image(150, 150, "ship2");
+        //ship3 = this.add.image(200, 200, "ship3");
+        hamBurnt = this.physics.add.image(300, 500, "Burnt_Ham");
         hamBurnt.setScale(.05);
-        appleRaw = this.physics.add.image(150, 150, "RawApple.png");
+        appleRaw = this.physics.add.image(150, 150, "RawApple");
         appleRaw.setScale(.02);
-        chickenRaw = this.physics.add.image(250, 100, "RawChicken.svg");
+        chickenRaw = this.physics.add.image(250, 100, "RawChicken");
         chickenRaw.setScale(.5);
-        orangeRaw = this.physics.add.image(300, 200, "RawOrange.png");
+        orangeRaw = this.physics.add.image(300, 200, "RawOrange");
         orangeRaw.setScale(.02);
-        hamRaw = this.physics.add.image(200, 100, "RawHam.png");
+        hamRaw = this.physics.add.image(200, 100, "RawHam");
         hamRaw.setScale(.02);
-        bomb = this.physics.add.image(350, 150, "cannonball.png");
+        bomb = this.physics.add.image(350, 150, "cannonball");
         bomb.setScale(.015);
 
 
@@ -74,12 +231,12 @@ class Scene_Intro extends Phaser.Scene {
 
         cursors = this.input.keyboard.createCursorKeys();
 
-        player = this.physics.add.image(100, 850 -170, "DragonInGame.png").setInteractive({ draggable: true});
+        player = this.physics.add.image(100, 850 -170, "DragonInGame").setInteractive({ draggable: true});
         player.setScale(0.1);
 
         player.setCollideWorldBounds(true);
 
-        touchArea = this.add.image(0, 800-120, "TouchArea.png");
+        touchArea = this.add.image(0, 800-120, "TouchArea");
         touchArea.setOrigin(0,0);
         touchArea.alpha = 0.001;
         touchArea.setInteractive({});
@@ -217,205 +374,6 @@ class Scene_Intro extends Phaser.Scene {
             }
         }
 
-    }
-
-    
-}
-// *** The first acknowledgement of the game. This is the title card or that "press start" sorta screen.
-class Scene_Title extends Phaser.Scene {
-    
-    button;
-    
-    Scene_Title()
-    {
-        Phaser.Scene.call(this, { key: 'title' });
-    }
-
-    preload()
-    {
-        console.log("Title scene was started.");
-       
-    }
-
-    create()
-    {
-        Helper.PlaceImage(0,0,"PlaceHolderBG")
-        //Start Button
-        startButton = Helper.PlaceImage(125, 350, "StartButton");
-        startButton.setInteractive();
-        startButton.on('pointerdown', function(pointer){
-            console.log("ButtonPressed");
-            Helper.ChangeScene("gameplay");
-        });
-        //Instruction Button
-        insButton = Helper.PlaceImage(125, 445, "InstructionButton").setInteractive();
-        insButton.on("pointerdown", function(pointer){
-            Helper.ChangeScene("instructions");
-        });
-        //HighScore Button
-        hsButton = Helper.PlaceImage(125, 540, "HighScoreButton").setInteractive();
-        hsButton.on("pointerdown", function(pointer){
-            Helper.ChangeScene("highscore");
-        });
-        //Credits Button
-        credButton =  Helper.PlaceImage(125, 635, "CreditsButton").setInteractive();
-        credButton.on("pointerdown", function(pointer){
-            Helper.ChangeScene("Credits");
-            console.log("Credits");
-        });
-
-        
-        
-        Helper.PlaceSprite(0, 0, "MockDesign_MainMenu");
-        //
-        var button = Helper.PlaceSprite(125, 400, "Start_Button");
-        button.setInteractive();
-        button.on('pointerup', function(pointer) {
-            alert("OH BABY!");
-        });
-    }
-
-    up() {
-        console.log('button up', arguments);
-    }
-    
-    over() {
-        console.log('button over');
-    }
-    
-    out() {
-        console.log('button out');
-    }
-    
-    actionOnClick () {
-    
-        background.visible =! background.visible;
-    
-    }
-   
-    update(time, delta)
-    {
-    }
-}
-class Scene_Instructions extends Phaser.Scene {
-    Scene_Instructions()
-    {
-        Phaser.Scene.call(this, { key: 'instructions' });
-    }
-
-    preload()
-    {
-    }
-
-    create()
-    {
-        Helper.PlaceSprite(0, 0, "MockDesign_Instructions");
-    }
-
-    update(time, delta)
-    {
-    }
-}
-class Scene_Highscore extends Phaser.Scene {
-    Scene_Highscore()
-    {
-        Phaser.Scene.call(this, { key: 'highscore' });
-    }
-
-    preload()
-    {
-    }
-
-    create()
-    {
-    }
-
-    update(time, delta)
-    {
-    }
-}
-class Scene_Credits extends Phaser.Scene {
-    Scene_Credits()
-    {
-        Phaser.Scene.call(this, { key: 'credits' });
-    }
-
-    preload()
-    {
-    }
-
-    create()
-    {
-        Helper.PlaceSprite(0, 0, "MockDesign_Credits");
-    }
-
-    update(time, delta)
-    {
-    }
-}
-
-
-
-var sprite;
-var group;
-class Scene_Gameplay extends Phaser.Scene {
-    Scene_Gameplay()
-    {
-        Phaser.Scene.call(this, { key: 'gameplay' });
-    }
-
-    preload()
-    {
-        // this.load.image('mushroom', 'assets/sprites/mushroom2.png');
-        // this.load.image('ball', 'assets/sprites/shinyball.png');
-    }
-
-    create()
-    {
-        // Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
-
-
-        sprite = this.physics.add.image(400, 300, 'RawApple');
-
-        group = this.physics.add.staticGroup({
-            key: 'RawApple',
-            frameQuantity: 30
-        });
-
-
-
-        Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
-
-        //  We need to call this because placeOnRectangle has changed the coordinates of all the children
-        //  If we don't call it, the static physics bodies won't be updated to reflect them
-        group.refresh();
-
-        sprite.setVelocity(100, 200).setBounce(1, 1).setCollideWorldBounds(true).setGravityY(200);
-
-        this.physics.add.collider(sprite, group);
-
-
-        sprite.setCollideCallback(this.onSpriteCollide, this);
-    }
-
-    onSpriteCollide() {
-        alert("BABY!");
-        Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
-        menuButton = Helper.PlaceImage(345,12,"MenuButton").setInteractive();
-        menuButton.on("pointerdown", function(pointer){
-            Helper.ChangeScene("title");
-        });
-        
-    }
-
-    update(time, delta)
-    {
-    }
-
-
-
-    hitSprite (sprite1, sprite2) {
-        
     }
 }
 class Scene_Results extends Phaser.Scene {

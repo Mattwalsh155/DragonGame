@@ -106,7 +106,7 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        Helper.ChangeScene("title", { wasCreatedAtGameStart: true });
+        Helper.ChangeScene("intro", { wasCreatedAtGameStart: true });
     }
 }
 
