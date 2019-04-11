@@ -12,7 +12,10 @@ var rawImages = [
     "Dragon_Logo.png",
     "RawOrange.png",
     "RawApple.png",
-    "DragonInGame.png"
+    "DragonInGame.png",
+    "Gauge.png",
+    "TouchArea.png",
+    "Background_Temp.png",
 
 ];
 var rawScenes = [
@@ -71,8 +74,8 @@ class Scene_Loader extends Phaser.Scene {
 
 var game = new Phaser.Game({
     type: Phaser.AUTO,
-    width: 400,
-    height: 600,
+    width: 450,
+    height: 800,
     physics: {
         default: 'arcade',
         arcade: {
