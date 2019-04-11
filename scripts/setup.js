@@ -1,9 +1,29 @@
 
 console.log("Initial setting up...");
 
+var cursors;
+var player; 
+var hamBurnt;
+var appleRaw;
+var chickenRaw;
+var orangeRaw;
+var hamRaw;
+var bomb;
+
+var fireball;
+var touchArea;
+
+var score = 0;
+var scoreText;
+var timer = 30000; //time is in ms
+var timerText;
+
+var areaIsTouched = false;
+var areaX = 0, areaY = 0;
 
 // *** The first thing to greet the user after everything is done loading. Usually logos and such like that.
 class Scene_Intro extends Phaser.Scene {
+
     Scene_Intro()
     {
         Phaser.Scene.call(this, { key: 'intro' });
@@ -16,17 +36,189 @@ class Scene_Intro extends Phaser.Scene {
 
     create(data)
     {
-        // var s = this.add.sprite(0, 0, "albert_einstein_head");
-        // s.setOrigin(0, 0);
-        // s.rotation = 0.14;
+        //this.add.text(20, 20, "Loading game...");
+        var s = this.add.sprite(0, 0, "Background_Temp.png");
+        s.setOrigin(0, 0);
+        s.rotation = 0;
+        s.setScale(0.7);
+        //this.add.image(375, 300, "background.png");
+
+        //ship2 = this.add.image(150, 150, "ship2.png");
+        //ship3 = this.add.image(200, 200, "ship3.png");
+        hamBurnt = this.physics.add.image(300, 500, "Burnt_Ham.png");
+        hamBurnt.setScale(.05);
+        appleRaw = this.physics.add.image(150, 150, "RawApple.png");
+        appleRaw.setScale(.02);
+        chickenRaw = this.physics.add.image(250, 100, "RawChicken.svg");
+        chickenRaw.setScale(.5);
+        orangeRaw = this.physics.add.image(300, 200, "RawOrange.png");
+        orangeRaw.setScale(.02);
+        hamRaw = this.physics.add.image(200, 100, "RawHam.png");
+        hamRaw.setScale(.02);
+        bomb = this.physics.add.image(350, 150, "cannonball.png");
+        bomb.setScale(.015);
 
 
-        // this.add.button(200, 300, 'button_sprite_sheet', function(){}, this, 2, 1, 0);
+
+        var foodGroup = this.physics.add.group({
+            allowGravity: false
+        });
+        foodGroup.add(hamBurnt, true);
+        foodGroup.add(appleRaw, true);
+        foodGroup.add(chickenRaw, true);
+        foodGroup.add(orangeRaw, true);
+        foodGroup.add(hamRaw, true);
+        foodGroup.add(bomb, true);
+
+
+        cursors = this.input.keyboard.createCursorKeys();
+
+        player = this.physics.add.image(100, 850 -170, "DragonInGame.png").setInteractive({ draggable: true});
+        player.setScale(0.1);
+
+        player.setCollideWorldBounds(true);
+
+        touchArea = this.add.image(0, 800-120, "TouchArea.png");
+        touchArea.setOrigin(0,0);
+        touchArea.alpha = 0.001;
+        touchArea.setInteractive({});
+        
+        
+        // this.physics.add.collider(player, foodGroup, this.collectFood, null, this);
+        this.physics.add.overlap(player, foodGroup, this.collectFood, null, this);
+        //this.physics.add.overlap(player, hamBurnt, collectFood, null, this);
+
+        //fireball = this.input.keyboard.addkey(Phaser.keyboard.SPACEBAR);
+
+        scoreText = this.add.text(16, 16, 'Score: 0', {
+            fontSize: '32px', fill: '#000' 
+        });
+
+        
+        timerText = this.add.text(16, 48, 'Time Left: ' + (timer /1000).toString(), {
+            fontSize: '32px', fill: '#000' 
+        });
+
+
+        this.input.on('gameobjectdown', function(pointer, gameObject) {
+            if (gameObject == touchArea) {
+                areaIsTouched = true;
+            }
+        }, this);
+        this.input.on('gameobjectmove', function(pointer, gameObject) {
+            if (gameObject == touchArea) {
+                areaX = pointer.x;
+                areaY = pointer.y;
+            }
+        }, this);
+        
+        this.input.on('pointerup', function(pointer, gameObject) {
+            areaIsTouched = false;
+        }, this);
+
     }
 
+    collectFood(player, food) {
+        // hamBurnt.disableBody(true, true);
+        food.y = 0;
+        var randomX = Phaser.Math.Between(0, 450);
+        food.x = randomX;
+
+        if (food == hamBurnt) {
+            score -= 100;
+        } 
+        else if (food == hamRaw) {
+            score += 500;
+        }
+        else if (food == appleRaw) {
+            score += 100;
+        }
+        else if (food == orangeRaw) {
+            score += 200;
+        }
+        else if (food == bomb) {
+            score -= 1000;
+        }
+        
+        scoreText.setText('Score: ' + score);
+
+    }
+
+    moveDragon(dragon, speed) {
+        dragon.y += speed;
+        if (dragon.y > 800) {
+            this.resetDragonPos(dragon);
+        }
+    }
+
+    resetDragonPos(dragon) {
+        dragon.y = 0;
+        var randomX = Phaser.Math.Between(0, 450);
+        dragon.x = randomX;
+    }
+    
     update(time, delta)
     {
+        player.setVelocity(0);
+
+        if (cursors.left.isDown) {
+            player.setVelocityX(-300);
+            player.setScale(-0.1, 0.1);
+        }
+        else if (cursors.right.isDown) {
+            player.setVelocityX(300);
+            
+            player.setScale(0.1, 0.1);
+        }
+
+        //working but not working
+        // %%$$&&
+        if (player.scaleX > 0) {
+            player.body.setSize(400, 200);
+            //
+            player.body.setOffset(800, 0);
+        }
+        else if (player.scaleX < 0) {
+            player.body.setSize(400, 200);
+            //
+            player.body.setOffset(800+400, 0);
+        }
+
+        this.moveDragon(hamBurnt, 2);
+        this.moveDragon(appleRaw, 3);
+        this.moveDragon(chickenRaw, 1);
+        this.moveDragon(orangeRaw, 1.5);
+        this.moveDragon(bomb, 1);
+        this.moveDragon(hamRaw, 2);
+
+        if (timer > 0) {
+            timer = timer - delta;
+            if (timer < 0) {
+                timer = 0;
+                //gameover
+            }
+        }
+
+        var tempStr = (timer /1000).toString();
+        var theIndex = tempStr.indexOf('.');
+        if (theIndex >= 0) { 
+            tempStr = tempStr.slice(0, tempStr.indexOf('.')); 
+        }
+        timerText.setText('Time Left: ' + tempStr);
+        
+        if (areaIsTouched) {
+            if (Math.abs(player.x-areaX) < 10) {}
+            else if (player.x < areaX) {
+                player.setVelocityX(300);
+            }
+            else if (player.x > areaX) {
+                player.setVelocityX(-300);
+            }
+        }
+
     }
+
+    
 }
 // *** The first acknowledgement of the game. This is the title card or that "press start" sorta screen.
 class Scene_Title extends Phaser.Scene {
@@ -38,6 +230,7 @@ class Scene_Title extends Phaser.Scene {
     preload()
     {
         console.log("Title scene was started.");
+       
     }
 
     create()

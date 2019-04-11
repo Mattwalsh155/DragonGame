@@ -2,13 +2,30 @@
 
 var rawImages = [
     "albert_einstein_head.jpg",
-
+    
     "MockDesign_Credits.jpg",
     "MockDesign_GameScreen.jpg",
     "MockDesign_Instructions.jpg",
     "MockDesign_MainMenu.jpg",
 
     "RawApple.png",
+
+    "sampleBackground.png",
+    "background.png",
+    "ship.png",
+    "ship2.png",
+    "ship3.png",
+    "Burnt_Ham.png",
+    "RawChicken.svg",
+    "Dragon_Logo.png",
+    "RawOrange.png",
+    "RawApple.png",
+    "DragonInGame.png",
+    "Gauge.png",
+    "TouchArea.png",
+    "Background_Temp.png",
+    "RawHam.png",
+    "cannonball.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
@@ -94,7 +111,7 @@ var game = new Phaser.Game({
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 200 }
+            gravity: { y: 0 }
         }
     },
     scene: Scene_Loader,
