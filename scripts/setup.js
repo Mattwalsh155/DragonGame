@@ -1,7 +1,7 @@
 
 console.log("Initial setting up...");
 
-
+var startButton, insButton, hsButton, credButton;
 // *** The first thing to greet the user after everything is done loading. Usually logos and such like that.
 class Scene_Intro extends Phaser.Scene {
     Scene_Intro()
@@ -42,7 +42,31 @@ class Scene_Title extends Phaser.Scene {
 
     create()
     {
-        Helper.PlaceSprite(0, 0, "MockDesign_MainMenu");
+        Helper.PlaceImage(0, 0, "PlaceHolderBG");
+        //Helper.PlaceImage(125, 350, "StartButton");
+        Helper.PlaceImage(125, 445, "InstructionButton");
+        Helper.PlaceImage(125, 635, "CreditsButton");
+        //Start Button
+        startButton = Helper.PlaceImage(125, 350, "StartButton");
+        startButton.setInteractive();
+        startButton.on('pointerdown', function(pointer){
+            console.log("ButtonPressed");
+            Helper.ChangeScene("gameplay");
+        });
+
+        insButton = Helper.PlaceImage(125, 445, "InstructionButton").setInteractive();
+        insButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("instructions");
+        });
+
+        hsButton = Helper.PlaceImage(125, 540, "HighScoreButton").setInteractive();
+        hsButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("highscore");
+        });
+
+
+
+        
     }
 
     update(time, delta)
@@ -157,7 +181,11 @@ Results
 */
 
 
+/*Loi's CODE*/
 
+function onClickButton(){
+    console.log("Goes to the GameScreen");
+}
 
 
 
