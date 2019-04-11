@@ -16,6 +16,8 @@ var rawImages = [
     "Gauge.png",
     "TouchArea.png",
     "Background_Temp.png",
+    "RawHam.png",
+    "cannonball.png",
 
 ];
 var rawScenes = [

@@ -3,10 +3,13 @@ console.log("Initial setting up...");
 
 var cursors;
 var player; 
-var food1;
-var food2;
-var food3;
-var food4;
+var hamBurnt;
+var appleRaw;
+var chickenRaw;
+var orangeRaw;
+var hamRaw;
+var bomb;
+
 var fireball;
 var touchArea;
 
@@ -42,23 +45,30 @@ class Scene_Intro extends Phaser.Scene {
 
         //ship2 = this.add.image(150, 150, "ship2.png");
         //ship3 = this.add.image(200, 200, "ship3.png");
-        food1 = this.physics.add.image(300, 500, "Burnt_Ham.png");
-        food1.setScale(.05);
-        food2 = this.physics.add.image(150, 150, "RawApple.png");
-        food2.setScale(.02);
-        food3 = this.physics.add.image(250, 100, "RawChicken.svg");
-        food3.setScale(.5);
-        food4 = this.physics.add.image(300, 200, "RawOrange.png");
-        food4.setScale(.02);
+        hamBurnt = this.physics.add.image(300, 500, "Burnt_Ham.png");
+        hamBurnt.setScale(.05);
+        appleRaw = this.physics.add.image(150, 150, "RawApple.png");
+        appleRaw.setScale(.02);
+        chickenRaw = this.physics.add.image(250, 100, "RawChicken.svg");
+        chickenRaw.setScale(.5);
+        orangeRaw = this.physics.add.image(300, 200, "RawOrange.png");
+        orangeRaw.setScale(.02);
+        hamRaw = this.physics.add.image(200, 100, "RawHam.png");
+        hamRaw.setScale(.02);
+        bomb = this.physics.add.image(350, 150, "cannonball.png");
+        bomb.setScale(.015);
+
 
 
         var foodGroup = this.physics.add.group({
             allowGravity: false
         });
-        foodGroup.add(food1, true);
-        foodGroup.add(food2, true);
-        foodGroup.add(food3, true);
-        foodGroup.add(food4, true);
+        foodGroup.add(hamBurnt, true);
+        foodGroup.add(appleRaw, true);
+        foodGroup.add(chickenRaw, true);
+        foodGroup.add(orangeRaw, true);
+        foodGroup.add(hamRaw, true);
+        foodGroup.add(bomb, true);
 
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -76,7 +86,7 @@ class Scene_Intro extends Phaser.Scene {
         
         // this.physics.add.collider(player, foodGroup, this.collectFood, null, this);
         this.physics.add.overlap(player, foodGroup, this.collectFood, null, this);
-        //this.physics.add.overlap(player, food1, collectFood, null, this);
+        //this.physics.add.overlap(player, hamBurnt, collectFood, null, this);
 
         //fireball = this.input.keyboard.addkey(Phaser.keyboard.SPACEBAR);
 
@@ -108,13 +118,28 @@ class Scene_Intro extends Phaser.Scene {
 
     }
 
-    collectFood(player, food1) {
-        // food1.disableBody(true, true);
-        food1.y = 0;
+    collectFood(player, food) {
+        // hamBurnt.disableBody(true, true);
+        food.y = 0;
         var randomX = Phaser.Math.Between(0, 450);
-        food1.x = randomX;
+        food.x = randomX;
 
-        score += 100;
+        if (food == hamBurnt) {
+            score -= 100;
+        } 
+        else if (food == hamRaw) {
+            score += 500;
+        }
+        else if (food == appleRaw) {
+            score += 100;
+        }
+        else if (food == orangeRaw) {
+            score += 200;
+        }
+        else if (food == bomb) {
+            score -= 1000;
+        }
+        
         scoreText.setText('Score: ' + score);
 
     }
@@ -159,10 +184,12 @@ class Scene_Intro extends Phaser.Scene {
             player.body.setOffset(800+400, 0);
         }
 
-        this.moveDragon(food1, 2);
-        this.moveDragon(food2, 3);
-        this.moveDragon(food3, 1);
-        this.moveDragon(food4, 1.5);
+        this.moveDragon(hamBurnt, 2);
+        this.moveDragon(appleRaw, 3);
+        this.moveDragon(chickenRaw, 1);
+        this.moveDragon(orangeRaw, 1.5);
+        this.moveDragon(bomb, 1);
+        this.moveDragon(hamRaw, 2);
 
         if (timer > 0) {
             timer = timer - delta;
