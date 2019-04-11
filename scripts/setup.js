@@ -1,7 +1,7 @@
 
 console.log("Initial setting up...");
 
-var startButton, insButton, hsButton, credButton;
+var startButton, insButton, hsButton, credButton, menuButton;
 // *** The first thing to greet the user after everything is done loading. Usually logos and such like that.
 class Scene_Intro extends Phaser.Scene {
     Scene_Intro()
@@ -42,10 +42,7 @@ class Scene_Title extends Phaser.Scene {
 
     create()
     {
-        Helper.PlaceImage(0, 0, "PlaceHolderBG");
-        //Helper.PlaceImage(125, 350, "StartButton");
-        Helper.PlaceImage(125, 445, "InstructionButton");
-        Helper.PlaceImage(125, 635, "CreditsButton");
+        Helper.PlaceImage(0,0,"PlaceHolderBG")
         //Start Button
         startButton = Helper.PlaceImage(125, 350, "StartButton");
         startButton.setInteractive();
@@ -53,18 +50,22 @@ class Scene_Title extends Phaser.Scene {
             console.log("ButtonPressed");
             Helper.ChangeScene("gameplay");
         });
-
+        //Instruction Button
         insButton = Helper.PlaceImage(125, 445, "InstructionButton").setInteractive();
         insButton.on("pointerdown", function(pointer){
             Helper.ChangeScene("instructions");
         });
-
+        //HighScore Button
         hsButton = Helper.PlaceImage(125, 540, "HighScoreButton").setInteractive();
         hsButton.on("pointerdown", function(pointer){
             Helper.ChangeScene("highscore");
         });
-
-
+        //Credits Button
+        credButton =  Helper.PlaceImage(125, 635, "CreditsButton").setInteractive();
+        credButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("Credits");
+            console.log("Credits");
+        });
 
         
     }
@@ -142,6 +143,11 @@ class Scene_Gameplay extends Phaser.Scene {
     create()
     {
         Helper.PlaceSprite(0, 0, "MockDesign_GameScreen");
+        menuButton = Helper.PlaceImage(345,12,"MenuButton").setInteractive();
+        menuButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("credits");
+        });
+        
     }
 
     update(time, delta)
@@ -179,21 +185,6 @@ Title/Menu
 Gameplay
 Results
 */
-
-
-/*Loi's CODE*/
-
-function onClickButton(){
-    console.log("Goes to the GameScreen");
-}
-
-
-
-
-
-
-
-
 
 
 
