@@ -223,6 +223,9 @@ class Scene_Intro extends Phaser.Scene {
 }
 // *** The first acknowledgement of the game. This is the title card or that "press start" sorta screen.
 class Scene_Title extends Phaser.Scene {
+    
+    button;
+    
     Scene_Title()
     {
         Phaser.Scene.call(this, { key: 'title' });
@@ -262,8 +265,34 @@ class Scene_Title extends Phaser.Scene {
         });
 
         
+        
+        Helper.PlaceSprite(0, 0, "MockDesign_MainMenu");
+        //
+        var button = Helper.PlaceSprite(125, 400, "Start_Button");
+        button.setInteractive();
+        button.on('pointerup', function(pointer) {
+            alert("OH BABY!");
+        });
     }
 
+    up() {
+        console.log('button up', arguments);
+    }
+    
+    over() {
+        console.log('button over');
+    }
+    
+    out() {
+        console.log('button out');
+    }
+    
+    actionOnClick () {
+    
+        background.visible =! background.visible;
+    
+    }
+   
     update(time, delta)
     {
     }

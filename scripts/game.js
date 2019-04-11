@@ -31,7 +31,8 @@ var rawImages = [
     "HighScoreButton.png",
     "InstructionButton.png",
     "StartButton.png",
-    "MenuButton.png"
+    "MenuButton.png",
+    "Start_Button.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
