@@ -26,6 +26,12 @@ var rawImages = [
     "Background_Temp.png",
     "RawHam.png",
     "cannonball.png",
+    "PlaceHolderBG.png",
+    "CreditsButton.png",
+    "HighScoreButton.png",
+    "InstructionButton.png",
+    "StartButton.png",
+    "MenuButton.png"
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
@@ -99,7 +105,7 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        Helper.ChangeScene("gameplay", { wasCreatedAtGameStart: true });
+        Helper.ChangeScene("title", { wasCreatedAtGameStart: true });
     }
 }
 
