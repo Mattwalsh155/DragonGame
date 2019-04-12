@@ -416,7 +416,7 @@ Results
 
 
 Helper = {
-    _scene: "Not initialized",
+    _scene: undefined,
 
     _initialize: function() {
         console.log("Init HELPER...");
@@ -471,6 +471,20 @@ Helper = {
         //
         //
         return s;
+    },
+
+    // *** Loads the sound effect in immediately so that there is no delay the next time it must be played.
+    Sound_WarmUp: function(key) {
+        if (!this._scene._soundList) { this._scene._soundList = {}; }
+        //
+        if (!this._scene._soundList[key]) { this._scene._soundList[key] = this._scene.sound.add(key); }
+    },
+    // *** Plays the sound. It may need to load if it has not been warmed up yet.
+    Sound_Play: function(key) {
+        this.Sound_WarmUp(key);
+        //
+        //
+        this._scene._soundList[key].play();
     },
 
 

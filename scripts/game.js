@@ -37,6 +37,7 @@ var rawImages = [
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
 ];
+// ??? <-- This loads a little different because "phaser"... ... ...
 var rawAudios = [
     [
         // 'test.ogg',
@@ -106,7 +107,9 @@ class Scene_Loader extends Phaser.Scene {
             console.log(rawAudios[i][0]);
 
             Q = rawAudios[i][0];
-            Q = this.load.audio(Q.slice(0, Q.indexOf('.')), rawAudios[i]);
+            Q = Q.slice(0, Q.indexOf('.'));
+            Q = Q.slice(Q.lastIndexOf('/')+1, Q.length);
+            Q = this.load.audio(Q, rawAudios[i]);
             console.log(Q);
         }
 
@@ -126,10 +129,10 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        var music = this.sound.add('assets/audio/test');
-        music.play();
-
         Helper.ChangeScene("title", { wasCreatedAtGameStart: true });
+        //
+        //
+        Helper.Sound_Play('test');
     }
 }
 
