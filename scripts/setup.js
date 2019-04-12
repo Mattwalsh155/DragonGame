@@ -402,6 +402,14 @@ class Scene_Gameplay extends Phaser.Scene {
 
     }
 }
+var appleTotal;
+var hamTotal;
+var chickenTotal;
+var orangeTotal;
+var bombTotal;
+var rank;
+var rankText;
+
 class Scene_Results extends Phaser.Scene {
     Scene_Results()
     {
@@ -425,6 +433,47 @@ class Scene_Results extends Phaser.Scene {
         scoreText = this.add.text(48, 128, 'Final Score: ' + score, {
             fontSize: '32px', fill: '#000' 
         });
+
+        appleTotal = this.add.text(32, 200, 'Apples Collected: ' + appleCount, {
+            fontSize: '32px', fill: '#000'
+        });
+
+        orangeTotal = this.add.text(32, 250, 'Oranges Collected: ' + orangeCount, {
+            fontSize: '32px', fill: '#000'
+        });
+
+        hamTotal = this.add.text(32, 300, 'Ham Collected: ' + hamCount, {
+            fontSize: '32px', fill: '#000'
+        });
+
+        chickenTotal = this.add.text(32, 350, 'Chicken Collected: ' + chickenCount, {
+            fontSize: '32px', fill: '#000'
+        });
+
+        bombTotal = this.add.text(32, 400, 'Apples Collected: ' + bombCount, {
+            fontSize: '32px', fill: '#000'
+        });
+
+        if (score <= 1000) {
+            rank = 'Starving Dragon';
+        }
+        else if (score <= 5000) {
+            rank = 'Hungry Dragon';
+        }
+        else if (score <= 20000) {
+            rank = 'Satisfied Dragon';
+        }
+        else if (score <= 50000) {
+            rank = 'Guttonous Dragon';
+        }
+        else if (score > 50000) {
+            rank = 'Food Dragon God';
+        }
+
+        rankText = this.add.text(32, 500, 'Rank: ' + rank, {
+            fontSize: '32px', fill: '#000'
+        });
+        
     }
 
     update(time, delta)
