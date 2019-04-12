@@ -21,7 +21,7 @@ var timerText;
 var areaIsTouched = false;
 var areaX = 0, areaY = 0;
 
-var startButton, insButton, hsButton, credButton, menuButton;
+var startButton, insButton, hsButton, credButton, menuButton, backButton;
 // *** The first thing to greet the user after everything is done loading. Usually logos and such like that.
 class Scene_Intro extends Phaser.Scene {
 
@@ -69,7 +69,7 @@ class Scene_Title extends Phaser.Scene {
         Helper.PlaceImage(0,0,"PlaceHolderBG")
         //
         
-        Helper.PlaceSprite(0, 0, "MockDesign_MainMenu");
+        Helper.PlaceSprite(0, 0, "Background_Main");
         //
 
         //Start Button
@@ -170,7 +170,12 @@ class Scene_Credits extends Phaser.Scene {
 
     create()
     {
-        Helper.PlaceSprite(0, 0, "MockDesign_Credits");
+        Helper.PlaceSprite(0, 0, "Background_Credits");
+
+        backButton = Helper.PlaceImage(125, 550, "BackButton").setInteractive();
+        backButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene('title');
+        });
     }
 
     update(time, delta)
@@ -273,6 +278,12 @@ class Scene_Gameplay extends Phaser.Scene {
         this.input.on('pointerup', function(pointer, gameObject) {
             areaIsTouched = false;
         }, this);
+
+        //
+        menuButton = Helper.PlaceImage(350,10,"MenuButton").setInteractive();
+        menuButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("title");
+        });
 
     }
 
