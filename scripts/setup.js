@@ -39,6 +39,10 @@ class Scene_Intro extends Phaser.Scene {
 
     create()
     {
+        var apple = Helper.PlaceImage(100, 100, 'RawApple');
+        //
+        //
+        apple.Despawn();
     }
 
     update(time, delta)
@@ -422,6 +426,10 @@ Helper = {
     },
 
     ChangeScene: function(key, data) {
+        if (this._scene) {
+            game.scene.stop(this._scene);
+        }
+        //
         this._scene = game.scene.keys[key];
         //
         console.log("[" + key + "] scene is beginning...");
@@ -432,13 +440,18 @@ Helper = {
     },
 
     PlaceSprite: function(x, y, key) {
-        console.log(this);
-
         var s = this._scene.add.sprite(x, y, key);
         s.setOrigin(0, 0);
         //
         s.scaleX = Helper.AR;
         s.scaleY = Helper.AR;
+        //
+        //
+        // this._allSprites.push(s);
+        // this._allTheThings.push(s);
+        //
+        this._ActorSetup(s);
+        //
         //
         return s;
     },
@@ -450,7 +463,32 @@ Helper = {
         s.scaleX = Helper.AR;
         s.scaleY = Helper.AR;
         //
+        //
+        // this._allImages.push(s);
+        // this._allTheThings.push(s);
+        //
+        this._ActorSetup(s);
+        //
+        //
         return s;
+    },
+
+
+
+
+    _ActorSetup: function(actor) {
+        if (!actor.Despawn) { actor.Despawn = this.__Despawn; }
+        if (!actor.Discard) { actor.Discard = this.__Discard; }
+    },
+
+
+    __Despawn: function() {
+
+        //
+        this.Discard();
+    },
+    __Discard: function() {
+        this.destroy();
     },
 };
 

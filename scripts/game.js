@@ -37,6 +37,13 @@ var rawImages = [
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
 ];
+var rawAudios = [
+    [
+        // 'test.ogg',
+        // 'test.mp3',
+        'assets/audio/test.wav',
+    ],
+];
 var rawScenes = [
     ['intro', Scene_Intro],
     ['title', Scene_Title],
@@ -67,8 +74,9 @@ class Scene_Loader extends Phaser.Scene {
         console.log("Game started loading...");
         //
         var Q;
-        // -----------------------------------------------------------------------------------------------------------------------------
         // *** The game's resources and stuff. Images, audio, etc...
+        // -----------------------------------------------------------------------------------------------------------------------------
+        
         console.log("ON: Spritesheets");
 
         for (var i = 0; i < rawSpritesheets.length; i++) {
@@ -81,12 +89,24 @@ class Scene_Loader extends Phaser.Scene {
         }
 
         // -----------------------------------------------------------------------------------------------------------------------------
-        // *** The game's resources and stuff. Images, audio, etc...
         console.log("ON: Images");
 
         for (var i = 0; i < rawImages.length; i++) {
             Q = rawImages[i];
             Q = this.load.image(Q.slice(0, Q.indexOf('.')), "assets/pics/" + rawImages[i]);
+            console.log(Q);
+        }
+
+        // -----------------------------------------------------------------------------------------------------------------------------
+        console.log("ON: Audios");
+
+        for (var i = 0; i < rawAudios.length; i++) {
+
+            console.log(rawAudios[i]);
+            console.log(rawAudios[i][0]);
+
+            Q = rawAudios[i][0];
+            Q = this.load.audio(Q.slice(0, Q.indexOf('.')), rawAudios[i]);
             console.log(Q);
         }
 
@@ -106,7 +126,10 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        Helper.ChangeScene("intro", { wasCreatedAtGameStart: true });
+        var music = this.sound.add('assets/audio/test');
+        music.play();
+
+        Helper.ChangeScene("title", { wasCreatedAtGameStart: true });
     }
 }
 
@@ -122,6 +145,9 @@ var game = new Phaser.Game({
         }
     },
     scene: Scene_Loader,
+    audio: {
+        disableWebAudio: true
+    },
 });
 //
 //
