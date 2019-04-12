@@ -12,11 +12,8 @@ var rawImages = [
 
     "sampleBackground.png",
     "background.png",
-    "ship.png",
-    "ship2.png",
-    "ship3.png",
     "Burnt_Ham.png",
-    "RawChicken.svg",
+    "RawChicken.png",
     "Dragon_Logo.png",
     "RawOrange.png",
     "RawApple.png",
@@ -33,6 +30,8 @@ var rawImages = [
     "StartButton.png",
     "MenuButton.png",
     "Start_Button.png",
+    "Dragon2.png",
+    "PlaceHolderBG.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
@@ -106,7 +105,7 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        Helper.ChangeScene("intro", { wasCreatedAtGameStart: true });
+        Helper.ChangeScene("gameplay", { wasCreatedAtGameStart: true });
     }
 }
 

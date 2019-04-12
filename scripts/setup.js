@@ -1,25 +1,7 @@
 
 console.log("Initial setting up...");
 
-var cursors;
-var player; 
-var hamBurnt;
-var appleRaw;
-var chickenRaw;
-var orangeRaw;
-var hamRaw;
-var bomb;
 
-var fireball;
-var touchArea;
-
-var score = 0;
-var scoreText;
-var timer = 30000; //time is in ms
-var timerText;
-
-var areaIsTouched = false;
-var areaX = 0, areaY = 0;
 
 var startButton, insButton, hsButton, credButton, menuButton;
 // *** The first thing to greet the user after everything is done loading. Usually logos and such like that.
@@ -178,10 +160,41 @@ class Scene_Credits extends Phaser.Scene {
     }
 }
 
-
-
 var sprite;
 var group;
+
+var cursors;
+var player; 
+var hamBurnt;
+var appleRaw;
+var chickenRaw;
+var orangeRaw;
+var hamRaw;
+var bomb;
+
+var fireball;
+var touchArea;
+
+var score = 0;
+var scoreText;
+var timer = 3000; //time is in ms
+var timerText;
+
+var areaIsTouched = false;
+var areaX = 0, areaY = 0;
+
+var speed;
+var resultsScreen;
+
+var gameOverText;
+var resultsText;
+
+var hamCount = 0;
+var appleCount = 0;
+var chickenCount = 0;
+var orangeCount = 0;
+var bombCount = 0;
+
 class Scene_Gameplay extends Phaser.Scene {
     Scene_Gameplay()
     {
@@ -196,19 +209,17 @@ class Scene_Gameplay extends Phaser.Scene {
     {
         //this.add.text(20, 20, "Loading game...");
         var s = this.add.sprite(0, 0, "Background_Temp");
-        s.setOrigin(0, 0);
+        s.setOrigin(0.1, 0);
         s.rotation = 0;
         s.setScale(0.7);
-        //this.add.image(375, 300, "background");
 
-        //ship2 = this.add.image(150, 150, "ship2");
-        //ship3 = this.add.image(200, 200, "ship3");
+        
         hamBurnt = this.physics.add.image(300, 500, "Burnt_Ham");
         hamBurnt.setScale(.05);
         appleRaw = this.physics.add.image(150, 150, "RawApple");
-        appleRaw.setScale(.02);
+        appleRaw.setScale(.5);
         chickenRaw = this.physics.add.image(250, 100, "RawChicken");
-        chickenRaw.setScale(.5);
+        chickenRaw.setScale(1);
         orangeRaw = this.physics.add.image(300, 200, "RawOrange");
         orangeRaw.setScale(.02);
         hamRaw = this.physics.add.image(200, 100, "RawHam");
@@ -232,7 +243,7 @@ class Scene_Gameplay extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys();
 
         player = this.physics.add.image(100, 850 -170, "DragonInGame").setInteractive({ draggable: true});
-        player.setScale(0.1);
+        player.setScale(1);
 
         player.setCollideWorldBounds(true);
 
@@ -284,18 +295,27 @@ class Scene_Gameplay extends Phaser.Scene {
 
         if (food == hamBurnt) {
             score -= 100;
+            hamCount++;
         } 
         else if (food == hamRaw) {
             score += 500;
+            hamCount++;
         }
         else if (food == appleRaw) {
             score += 100;
+            appleCount++;
         }
         else if (food == orangeRaw) {
             score += 200;
+            orangeCount++;
         }
         else if (food == bomb) {
             score -= 1000;
+            bombCount++;
+        }
+        else if (food == chickenRaw) {
+            score += 1000;
+            chickenCount++;
         }
         
         scoreText.setText('Score: ' + score);
@@ -314,6 +334,10 @@ class Scene_Gameplay extends Phaser.Scene {
         var randomX = Phaser.Math.Between(0, 450);
         dragon.x = randomX;
     }
+
+    endGame() {
+        Helper.ChangeScene("results");
+    }
     
     update(time, delta)
     {
@@ -321,25 +345,25 @@ class Scene_Gameplay extends Phaser.Scene {
 
         if (cursors.left.isDown) {
             player.setVelocityX(-300);
-            player.setScale(-0.1, 0.1);
+            player.setScale(-1, 1);
         }
         else if (cursors.right.isDown) {
             player.setVelocityX(300);
             
-            player.setScale(0.1, 0.1);
+            player.setScale(1, 1);
         }
 
         //working but not working
         // %%$$&&
         if (player.scaleX > 0) {
-            player.body.setSize(400, 200);
+            player.body.setSize(20, 20);
             //
-            player.body.setOffset(800, 0);
+            player.body.setOffset(80, 0);
         }
         else if (player.scaleX < 0) {
-            player.body.setSize(400, 200);
+            player.body.setSize(20, 20);
             //
-            player.body.setOffset(800+400, 0);
+            player.body.setOffset(80+40, 0);
         }
 
         this.moveDragon(hamBurnt, 2);
@@ -353,7 +377,7 @@ class Scene_Gameplay extends Phaser.Scene {
             timer = timer - delta;
             if (timer < 0) {
                 timer = 0;
-                //gameover
+                this.endGame();
             }
         }
 
@@ -368,9 +392,11 @@ class Scene_Gameplay extends Phaser.Scene {
             if (Math.abs(player.x-areaX) < 10) {}
             else if (player.x < areaX) {
                 player.setVelocityX(300);
+                player.setScale(1, 1);
             }
             else if (player.x > areaX) {
                 player.setVelocityX(-300);
+                player.setScale(-1, 1);
             }
         }
 
@@ -388,10 +414,22 @@ class Scene_Results extends Phaser.Scene {
 
     create()
     {
+        resultsScreen = this.add.image(0, 0, "PlaceHolderBG");
+        resultsScreen.setOrigin(0,0);
+        resultsScreen.setScale(1.5);
+
+        gameOverText = this.add.text(36, 32, 'Results!', {
+            fontSize: '80px', fill: '#000', 
+        });
+
+        scoreText = this.add.text(48, 128, 'Final Score: ' + score, {
+            fontSize: '32px', fill: '#000' 
+        });
     }
 
     update(time, delta)
     {
+
     }
 }
 
@@ -422,6 +460,8 @@ Helper = {
     },
 
     ChangeScene: function(key, data) {
+        if (this._scene) { game.scene.stop(this._scene); }
+
         this._scene = game.scene.keys[key];
         //
         console.log("[" + key + "] scene is beginning...");
