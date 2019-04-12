@@ -32,6 +32,10 @@ var rawImages = [
     "Start_Button.png",
     "Dragon2.png",
     "PlaceHolderBG.png",
+    "Background_Credits.png",
+    "BackButton.png",
+    "Background_Final.png",
+    "Background_Main.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
@@ -128,7 +132,7 @@ class Scene_Loader extends Phaser.Scene {
 
     create(data)
     {
-        Helper.ChangeScene("title", { wasCreatedAtGameStart: true });
+        Helper.ChangeScene("intro", { wasCreatedAtGameStart: true });
         //
         //
         Helper.Sound_Play('test');
