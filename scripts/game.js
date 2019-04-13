@@ -37,6 +37,8 @@ var rawImages = [
     "BackButton.png",
     "Background_Final.png",
     "Background_Main.png",
+    "Background_Instructioni-int.png",
+    "Background_New.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],

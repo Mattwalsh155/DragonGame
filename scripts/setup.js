@@ -69,7 +69,7 @@ class Scene_Title extends Phaser.Scene {
         Helper.PlaceImage(0,0,"PlaceHolderBG")
         //
         
-        Helper.PlaceSprite(0, 0, "Background_Main");
+        Helper.PlaceSprite(0, 0, "Background_New");
         //
 
         //Start Button
@@ -95,6 +95,9 @@ class Scene_Title extends Phaser.Scene {
             Helper.ChangeScene("credits");
             console.log("Credits");
         });
+
+        
+
     }
 
     up() {
@@ -131,7 +134,11 @@ class Scene_Instructions extends Phaser.Scene {
 
     create()
     {
-        Helper.PlaceSprite(0, 0, "MockDesign_Instructions");
+        Helper.PlaceSprite(0, 0, "Background_Instructioni-int");
+        backButton = Helper.PlaceImage(125, 665, "BackButton").setInteractive();
+        backButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene('title');
+        });
     }
 
     update(time, delta)
