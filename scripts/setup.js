@@ -3,7 +3,10 @@ console.log("Initial setting up...");
 
 
 
-var startButton, insButton, hsButton, credButton, menuButton, backButton;
+// ~~~ { Khori } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var logoThing;
+var logoTime;
 // *** The first thing to greet the user after everything is done loading. Usually logos and such like that.
 class Scene_Intro extends Phaser.Scene {
 
@@ -15,24 +18,42 @@ class Scene_Intro extends Phaser.Scene {
     preload()
     {
         console.log("Intro scene was started.");
+
+        logoTime = 0;
     }
 
     
 
     create()
     {
-        var apple = Helper.PlaceImage(100, 100, 'RawApple');
-        //
-        //
-        apple.Despawn();
+        logoThing = Helper.PlaceImage(100, 100, 'Screen_Intro');
     }
 
     update(time, delta)
     {
-        // Helper.ChangeScene('title', {});
+        logoTime += delta;
+
+
+        var fadeJist;
+        fadeJist = Math.min(logoTime / 1000, 1) - (Math.max(0,logoTime-(1000+1500)) / 1000);
+
+        logoThing.alpha = fadeJist;
+
+        this.input.on('pointerdown', function() {
+            Helper.ChangeScene('title', {});
+        });
+
+        if (logoTime >= 4000) {
+            Helper.ChangeScene('title', {});
+        }
     }
     
 }
+
+
+// ~~~ { Loi & Aaron } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var startButton, insButton, hsButton, credButton, menuButton, backButton;
 // *** The first acknowledgement of the game. This is the title card or that "press start" sorta screen.
 class Scene_Title extends Phaser.Scene {
     
@@ -73,8 +94,10 @@ class Scene_Title extends Phaser.Scene {
         //HighScore Button
         hsButton = Helper.PlaceImage(125, 540, "HighScoreButton").setInteractive();
         hsButton.on("pointerdown", function(pointer){
-            Helper.ChangeScene("highscore");
+            // Helper.ChangeScene("highscore");
         });
+        hsButton.alpha = 0.3;
+
         //Credits Button
         credButton =  Helper.PlaceImage(125, 635, "CreditsButton").setInteractive();
         credButton.on("pointerdown", function(pointer){
@@ -105,6 +128,11 @@ class Scene_Title extends Phaser.Scene {
     {
     }
 }
+
+
+// ~~~ { Aaron } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var instructBackButton;
 class Scene_Instructions extends Phaser.Scene {
     Scene_Instructions()
     {
@@ -117,7 +145,13 @@ class Scene_Instructions extends Phaser.Scene {
 
     create()
     {
-        Helper.PlaceSprite(0, 0, "MockDesign_Instructions");
+        Helper.PlaceSprite(0, 0, "Background_Instructions"); // MockDesign_Instructions
+
+
+        instructBackButton = Helper.PlaceImage(125, 665, "BackButton").setInteractive();
+        instructBackButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene('title');
+        });
     }
 
     update(time, delta)
@@ -144,6 +178,8 @@ class Scene_Highscore extends Phaser.Scene {
     {
     }
 }
+// ~~~ { Loi } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Scene_Credits extends Phaser.Scene {
     Scene_Credits()
     {
@@ -169,6 +205,10 @@ class Scene_Credits extends Phaser.Scene {
     }
 }
 
+
+
+// ~~~ { Matt } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var sprite;
 var group;
 
@@ -184,13 +224,14 @@ var bomb;
 var fireball;
 var touchArea;
 
-var score = 0;
+var score;
 var scoreText;
-var timer = 3000; //time is in ms
+var timer; //time is in ms
 var timerText;
+var gameTime;
 
-var areaIsTouched = false;
-var areaX = 0, areaY = 0;
+var areaIsTouched;
+var areaX, areaY;
 
 var speed;
 var resultsScreen;
@@ -198,11 +239,11 @@ var resultsScreen;
 var gameOverText;
 var resultsText;
 
-var hamCount = 0;
-var appleCount = 0;
-var chickenCount = 0;
-var orangeCount = 0;
-var bombCount = 0;
+var hamCount;
+var appleCount;
+var chickenCount;
+var orangeCount;
+var bombCount;
 
 class Scene_Gameplay extends Phaser.Scene {
     Scene_Gameplay()
@@ -212,6 +253,19 @@ class Scene_Gameplay extends Phaser.Scene {
 
     preload()
     {
+        score = 0;
+        timer = 30000; //time is in ms
+        gameTime = 0;
+
+        areaIsTouched = false;
+        areaX = 0;
+        areaY = 0;
+
+        hamCount = 0;
+        appleCount = 0;
+        chickenCount = 0;
+        orangeCount = 0;
+        bombCount = 0;
     }
 
     create(data)
@@ -226,15 +280,15 @@ class Scene_Gameplay extends Phaser.Scene {
         hamBurnt = this.physics.add.image(300, 500, "Burnt_Ham");
         hamBurnt.setScale(.05);
         appleRaw = this.physics.add.image(150, 150, "RawApple");
-        appleRaw.setScale(.5);
+        appleRaw.setScale(.75);
         chickenRaw = this.physics.add.image(250, 100, "RawChicken");
         chickenRaw.setScale(1);
         orangeRaw = this.physics.add.image(300, 200, "RawOrange");
-        orangeRaw.setScale(.02);
+        // orangeRaw.setScale(.02);
         hamRaw = this.physics.add.image(200, 100, "RawHam");
-        hamRaw.setScale(.02);
+        // hamRaw.setScale(.02);
         bomb = this.physics.add.image(350, 150, "cannonball");
-        bomb.setScale(.015);
+        // bomb.setScale(.015);
 
 
 
@@ -258,7 +312,7 @@ class Scene_Gameplay extends Phaser.Scene {
 
         touchArea = this.add.image(0, 800-120, "TouchArea");
         touchArea.setOrigin(0,0);
-        touchArea.alpha = 0.001;
+        touchArea.alpha = 1;
         touchArea.setInteractive({});
         
         
@@ -269,12 +323,12 @@ class Scene_Gameplay extends Phaser.Scene {
         //fireball = this.input.keyboard.addkey(Phaser.keyboard.SPACEBAR);
 
         scoreText = this.add.text(16, 16, 'Score: 0', {
-            fontSize: '32px', fill: '#000' 
+            fontSize: '32px', fill: '#A00' 
         });
 
         
         timerText = this.add.text(16, 48, 'Time Left: ' + (timer /1000).toString(), {
-            fontSize: '32px', fill: '#000' 
+            fontSize: '32px', fill: '#A00' 
         });
 
 
@@ -303,34 +357,43 @@ class Scene_Gameplay extends Phaser.Scene {
     }
 
     collectFood(player, food) {
+
+        
+
         // hamBurnt.disableBody(true, true);
         food.y = 0;
         var randomX = Phaser.Math.Between(0, 450);
         food.x = randomX;
 
-        if (food == hamBurnt) {
-            score -= 100;
-            hamCount++;
-        } 
-        else if (food == hamRaw) {
-            score += 500;
-            hamCount++;
-        }
-        else if (food == appleRaw) {
-            score += 100;
-            appleCount++;
-        }
-        else if (food == orangeRaw) {
-            score += 200;
-            orangeCount++;
-        }
-        else if (food == bomb) {
+        if (food == bomb) {
+            Helper.Sound_Play("boom");
+
             score -= 1000;
             bombCount++;
         }
-        else if (food == chickenRaw) {
-            score += 1000;
-            chickenCount++;
+        else {
+            Helper.Sound_Play("chomp");
+
+            if (food == hamBurnt) {
+                score -= 100;
+                hamCount++;
+            } 
+            else if (food == hamRaw) {
+                score += 500;
+                hamCount++;
+            }
+            else if (food == appleRaw) {
+                score += 300;
+                appleCount++;
+            }
+            else if (food == orangeRaw) {
+                score += 200;
+                orangeCount++;
+            }
+            else if (food == chickenRaw) {
+                score += 1000;
+                chickenCount++;
+            }
         }
         
         scoreText.setText('Score: ' + score);
@@ -339,13 +402,13 @@ class Scene_Gameplay extends Phaser.Scene {
 
     moveDragon(dragon, speed) {
         dragon.y += speed;
-        if (dragon.y > 800) {
+        if (dragon.y > 900) {
             this.resetDragonPos(dragon);
         }
     }
 
     resetDragonPos(dragon) {
-        dragon.y = 0;
+        dragon.y = Phaser.Math.Between(-800, 0);
         var randomX = Phaser.Math.Between(0, 450);
         dragon.x = randomX;
     }
@@ -356,67 +419,77 @@ class Scene_Gameplay extends Phaser.Scene {
     
     update(time, delta)
     {
-        player.setVelocity(0);
+        gameTime += delta;
 
-        if (cursors.left.isDown) {
-            player.setVelocityX(-300);
-            player.setScale(-1, 1);
-        }
-        else if (cursors.right.isDown) {
-            player.setVelocityX(300);
-            
-            player.setScale(1, 1);
-        }
+        if (player) {
+            player.setVelocity(0);
 
-        //working but not working
-        // %%$$&&
-        if (player.scaleX > 0) {
-            player.body.setSize(20, 20);
-            //
-            player.body.setOffset(80, 0);
-        }
-        else if (player.scaleX < 0) {
-            player.body.setSize(20, 20);
-            //
-            player.body.setOffset(80+40, 0);
-        }
-
-        this.moveDragon(hamBurnt, 2);
-        this.moveDragon(appleRaw, 3);
-        this.moveDragon(chickenRaw, 1);
-        this.moveDragon(orangeRaw, 1.5);
-        this.moveDragon(bomb, 1);
-        this.moveDragon(hamRaw, 2);
-
-        if (timer > 0) {
-            timer = timer - delta;
-            if (timer < 0) {
-                timer = 0;
-                this.endGame();
-            }
-        }
-
-        var tempStr = (timer /1000).toString();
-        var theIndex = tempStr.indexOf('.');
-        if (theIndex >= 0) { 
-            tempStr = tempStr.slice(0, tempStr.indexOf('.')); 
-        }
-        timerText.setText('Time Left: ' + tempStr);
-        
-        if (areaIsTouched) {
-            if (Math.abs(player.x-areaX) < 10) {}
-            else if (player.x < areaX) {
-                player.setVelocityX(300);
-                player.setScale(1, 1);
-            }
-            else if (player.x > areaX) {
+            if (cursors.left.isDown) {
                 player.setVelocityX(-300);
                 player.setScale(-1, 1);
             }
+            else if (cursors.right.isDown) {
+                player.setVelocityX(300);
+                
+                player.setScale(1, 1);
+            }
+
+            //working but not working
+            // %%$$&&
+            if (player.scaleX > 0) {
+                player.body.setSize(40, 40);
+                //
+                player.body.setOffset(80, 0);
+            }
+            else if (player.scaleX < 0) {
+                player.body.setSize(40, 40);
+                //
+                player.body.setOffset(80+40, 0);
+            }
+
+            this.moveDragon(hamBurnt, 2);
+            this.moveDragon(appleRaw, 2.5);
+            this.moveDragon(chickenRaw, 1);
+            this.moveDragon(orangeRaw, 1.5);
+            this.moveDragon(bomb, 1);
+            this.moveDragon(hamRaw, 2);
+
+            if (timer > 0) {
+                timer = timer - delta;
+                if (timer < 0) {
+                    timer = 0;
+                    this.endGame();
+                }
+            }
+
+            var tempStr = (timer /1000).toString();
+            var theIndex = tempStr.indexOf('.');
+            if (theIndex >= 0) { 
+                tempStr = tempStr.slice(0, tempStr.indexOf('.'));
+            }
+            timerText.setText('Time Left: ' + tempStr);
+            
+            if (areaIsTouched) {
+                if (Math.abs(player.x-areaX) < 10) {}
+                else if (player.x < areaX) {
+                    player.setVelocityX(300);
+                    player.setScale(1, 1);
+                }
+                else if (player.x > areaX) {
+                    player.setVelocityX(-300);
+                    player.setScale(-1, 1);
+                }
+            }
         }
 
+
+        if (gameTime >= 3000) { touchArea.alpha = 0.001; }
     }
 }
+
+
+// ~~~ { Matt } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var appleTotal;
 var hamTotal;
 var chickenTotal;
@@ -424,6 +497,8 @@ var orangeTotal;
 var bombTotal;
 var rank;
 var rankText;
+
+var resultBackButton;
 
 class Scene_Results extends Phaser.Scene {
     Scene_Results()
@@ -442,52 +517,66 @@ class Scene_Results extends Phaser.Scene {
         resultsScreen.setScale(1.5);
 
         gameOverText = this.add.text(36, 32, 'Results!', {
-            fontSize: '80px', fill: '#000', 
+            fontSize: '80px', fill: '#F90', 
         });
 
         scoreText = this.add.text(48, 128, 'Final Score: ' + score, {
-            fontSize: '32px', fill: '#000' 
+            fontSize: '32px', fill: '#F90' 
         });
 
         appleTotal = this.add.text(32, 200, 'Apples Collected: ' + appleCount, {
-            fontSize: '32px', fill: '#000'
+            fontSize: '32px', fill: '#F90'
         });
 
         orangeTotal = this.add.text(32, 250, 'Oranges Collected: ' + orangeCount, {
-            fontSize: '32px', fill: '#000'
+            fontSize: '32px', fill: '#F90'
         });
 
         hamTotal = this.add.text(32, 300, 'Ham Collected: ' + hamCount, {
-            fontSize: '32px', fill: '#000'
+            fontSize: '32px', fill: '#F90'
         });
 
         chickenTotal = this.add.text(32, 350, 'Chicken Collected: ' + chickenCount, {
-            fontSize: '32px', fill: '#000'
+            fontSize: '32px', fill: '#F90'
         });
 
-        bombTotal = this.add.text(32, 400, 'Apples Collected: ' + bombCount, {
-            fontSize: '32px', fill: '#000'
+        bombTotal = this.add.text(32, 400, 'Bombs Collected: ' + bombCount, {
+            fontSize: '32px', fill: '#F90'
         });
 
-        if (score <= 1000) {
-            rank = 'Starving Dragon';
-        }
-        else if (score <= 5000) {
-            rank = 'Hungry Dragon';
-        }
-        else if (score <= 20000) {
-            rank = 'Satisfied Dragon';
-        }
-        else if (score <= 50000) {
-            rank = 'Guttonous Dragon';
-        }
-        else if (score > 50000) {
+
+        if (score > 10000) {
             rank = 'Food Dragon God';
         }
+        else if (score > 6000) {
+            rank = 'Gluttonous Dragon';
+        }
+        else if (score > 3000) {
+            rank = 'Satisfied Dragon';
+        }
+        else if (score > 1000) {
+            rank = 'Hungry Dragon';
+        }
+        else {
+            rank = 'Starving Dragon';
+        }
+        
+        
+        
 
-        rankText = this.add.text(32, 500, 'Rank: ' + rank, {
-            fontSize: '32px', fill: '#000'
+        rankText = this.add.text(32, 500, "Rank: \n" + rank, {
+            fontSize: '32px', fill: '#F90'
         });
+
+
+        
+
+        //
+        resultBackButton = Helper.PlaceImage((450/2)-(321/2),600,"BackButton").setInteractive();
+        resultBackButton.on("pointerdown", function(pointer){
+            Helper.ChangeScene("title");
+        });
+
         
     }
 
@@ -513,6 +602,8 @@ Results
 
 
 
+// ~~~ { Khori } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Helper = {
     _scene: undefined,
 

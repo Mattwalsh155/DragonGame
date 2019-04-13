@@ -1,5 +1,6 @@
 
-
+// ~~~ { Khori } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var rawImages = [
     "albert_einstein_head.jpg",
     
@@ -36,6 +37,9 @@ var rawImages = [
     "BackButton.png",
     "Background_Final.png",
     "Background_Main.png",
+
+    "Background_Instructions.png",
+    "Screen_Intro.png",
 ];
 var rawSpritesheets = [
     ["button_sprite_sheet.png", 197, 71],
@@ -46,6 +50,12 @@ var rawAudios = [
         // 'test.ogg',
         // 'test.mp3',
         'assets/audio/test.wav',
+    ],
+    [
+        'assets/audio/chomp.wav',
+    ],
+    [
+        'assets/audio/boom.wav',
     ],
 ];
 var rawScenes = [
@@ -65,7 +75,8 @@ var rawScenes = [
 
 
 
-
+// ~~~ { Khori } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // *** Loads in all the necessary thing for the games to run. Basically, the loading screen.
 class Scene_Loader extends Phaser.Scene {
     Scene_Loader()
@@ -135,11 +146,12 @@ class Scene_Loader extends Phaser.Scene {
         Helper.ChangeScene("intro", { wasCreatedAtGameStart: true });
         //
         //
-        Helper.Sound_Play('test');
+        // Helper.Sound_Play('test');
     }
 }
 
-
+// ~~~ { Khori } ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var game = new Phaser.Game({
     type: Phaser.AUTO,
     width: 450, // (window.innerWidth * window.devicePixelRatio)
